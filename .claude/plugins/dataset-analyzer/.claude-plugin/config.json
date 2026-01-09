@@ -1,0 +1,25 @@
+{
+  "name": "dataset-analyzer",
+  "version": "1.0.0",
+  "description": "YOLO 資料集深度分析工具",
+  "author": "YOLO Project",
+  "commands": [
+    {
+      "name": "dataset-analyzer",
+      "description": "分析 YOLO 資料集品質和統計資訊",
+      "usage": "/dataset-analyzer [--path <dataset_path>] [--verbose] [--visualize]"
+    }
+  ],
+  "thresholds": {
+    "class_imbalance_ratio": 3.0,
+    "min_bbox_size": 10,
+    "max_bbox_size": 800,
+    "min_image_size": 320,
+    "max_image_size": 4096
+  },
+  "checks": {
+    "enable_duplicate_detection": true,
+    "enable_visualization": true,
+    "enable_advanced_stats": true
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "model-optimizer",
+  "version": "1.0.0",
+  "description": "YOLO 模型優化建議工具",
+  "author": "YOLO Project",
+  "commands": [
+    {
+      "name": "model-optimizer",
+      "description": "分析模型效能並提供優化建議",
+      "usage": "/model-optimizer [--weights <path>] [--benchmark] [--full-report]"
+    }
+  ],
+  "benchmark": {
+    "num_images": 100,
+    "warmup_runs": 10,
+    "devices": ["cpu", "mps"],
+    "image_sizes": [640]
+  },
+  "thresholds": {
+    "good_map": 0.7,
+    "excellent_map": 0.9,
+    "overfit_gap": 0.1,
+    "min_precision": 0.7,
+    "min_recall": 0.7
+  },
+  "recommendations": {
+    "enable_quantization_advice": true,
+    "enable_architecture_advice": true,
+    "enable_training_advice": true,
+    "enable_deployment_advice": true
+  }
+}

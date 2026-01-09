@@ -1,0 +1,44 @@
+{
+  "name": "training-monitor",
+  "version": "1.0.0",
+  "description": "YOLO 訓練即時監控工具",
+  "author": "YOLO Project",
+  "commands": [
+    {
+      "name": "training-monitor",
+      "description": "監控訓練進度並偵測異常",
+      "usage": "/training-monitor [--exp <path>] [--watch] [--report] [--compare]"
+    }
+  ],
+  "watch_mode": {
+    "update_interval": 10,
+    "show_plots": true,
+    "max_history": 100
+  },
+  "alerts": {
+    "enable_notifications": true,
+    "loss_spike_threshold": 0.5,
+    "loss_nan_check": true,
+    "stagnation_epochs": 20,
+    "overfit_gap_threshold": 0.1,
+    "memory_threshold": 0.9
+  },
+  "performance": {
+    "track_gpu_usage": true,
+    "track_memory": true,
+    "track_data_loading": true,
+    "track_epoch_time": true
+  },
+  "report": {
+    "save_interval": 10,
+    "include_plots": true,
+    "format": "markdown",
+    "auto_generate": true
+  },
+  "thresholds": {
+    "critical_loss_increase": 1.5,
+    "high_loss_increase": 0.5,
+    "max_stagnation_epochs": 20,
+    "min_improvement": 0.001
+  }
+}

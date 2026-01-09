@@ -1,0 +1,35 @@
+{
+  "name": "api-security",
+  "version": "1.0.0",
+  "description": "FastAPI 後端安全性檢查工具",
+  "author": "YOLO Project",
+  "commands": [
+    {
+      "name": "api-security",
+      "description": "掃描 API 安全漏洞並提供修復建議",
+      "usage": "/api-security [--code-only] [--config-only] [--detailed]"
+    }
+  ],
+  "severity_levels": {
+    "critical": ["authentication", "injection", "secrets"],
+    "high": ["rate_limiting", "cors", "file_upload"],
+    "medium": ["file_validation", "error_handling", "logging"],
+    "low": ["headers", "documentation"]
+  },
+  "checks": {
+    "enable_owasp_scan": true,
+    "enable_dependency_scan": true,
+    "enable_code_review": true,
+    "enable_config_review": true
+  },
+  "ignore_patterns": [
+    "*/tests/*",
+    "*/venv/*",
+    "*/__pycache__/*"
+  ],
+  "thresholds": {
+    "min_score": 80,
+    "max_critical": 0,
+    "max_high": 2
+  }
+}
