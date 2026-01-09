@@ -269,36 +269,127 @@ curl -X POST "http://localhost:8000/predict?conf_threshold=0.25" \
 
 ```
 YOLO_Project/
-├── config/                 # 配置檔
-│   ├── data.yaml          # 資料集配置
-│   └── data_gray.yaml     # 灰階資料集配置
-├── dataset/               # 資料集目錄
-│   ├── MBB_Dataset/       # 原始資料集
-│   └── MBB_gray_processed/ # 預處理後資料
-├── runs/                  # 訓練輸出（.gitignore）
-│   └── train/exp/weights/
-│       ├── best.pt        # 最佳模型
-│       └── last.pt        # 最後模型
+├── .claude/                      # Claude Code 設定
+│   ├── commands/                 # 自定義命令（10 個）
+│   │   ├── train.md             # 啟動訓練
+│   │   ├── api-test.md          # 測試 API
+│   │   ├── preprocess.md        # 資料預處理
+│   │   ├── check-model.md       # 檢查模型
+│   │   ├── start-services.md    # 啟動服務
+│   │   ├── stop-services.md     # 停止服務
+│   │   ├── validate.md          # 驗證模型
+│   │   ├── commit-push.md       # Git 工作流程
+│   │   ├── quick-predict.md     # 快速推論
+│   │   └── project-status.md    # 專案狀態
+│   ├── plugins/                 # 專業插件（4 個）
+│   │   ├── dataset-analyzer/    # 資料集分析工具
+│   │   ├── model-optimizer/     # 模型優化建議
+│   │   ├── api-security/        # API 安全檢查
+│   │   ├── training-monitor/    # 訓練監控工具
+│   │   └── README.md            # Plugins 總覽
+│   ├── skills/                  # 專案技能
+│   │   ├── backend-api/         # FastAPI 後端規範
+│   │   ├── data-pipeline/       # 資料處理流程
+│   │   └── yolo-training/       # YOLO 訓練流程
+│   └── settings.json            # Claude Code 設定
+│
+├── config/                       # 配置檔（.gitignore）
+│   ├── data.example.yaml        # 資料集配置範本 ⭐
+│   ├── data.yaml                # 資料集配置（本地）
+│   └── data_gray.yaml           # 灰階資料集配置（本地）
+│
+├── dataset/                      # 資料集目錄（.gitignore）
+│   ├── your_dataset/            # 你的資料集
+│   │   ├── images/              # 圖片檔案
+│   │   │   ├── train/          # 訓練集圖片
+│   │   │   └── val/            # 驗證集圖片
+│   │   └── labels/              # 標註檔案
+│   │       ├── train/          # 訓練集標註 (.txt)
+│   │       └── val/            # 驗證集標註 (.txt)
+│   └── README.md                # 資料集說明
+│
+├── runs/                         # 訓練輸出（.gitignore）
+│   └── train/exp/
+│       ├── weights/
+│       │   ├── best.pt          # 最佳模型
+│       │   └── last.pt          # 最後模型
+│       ├── results.csv          # 訓練指標
+│       └── results.png          # 訓練曲線
+│
+├── analysis/                     # Plugin 輸出（.gitignore）
+├── monitoring/                   # Plugin 輸出（.gitignore）
+├── optimization/                 # Plugin 輸出（.gitignore）
+├── security/                     # Plugin 輸出（.gitignore）
+│
 ├── src/
 │   ├── api/
-│   │   ├── main.py        # FastAPI 主程式
-│   │   ├── test_api.py    # API 測試腳本
-│   │   └── requirements.txt
+│   │   ├── main.py              # FastAPI 主程式
+│   │   ├── test_api.py          # API 測試腳本
+│   │   ├── requirements.txt     # Python 依賴
+│   │   └── README.md            # API 文檔
 │   ├── frontend/
-│   │   ├── index.html     # Web UI
-│   │   ├── app.js         # 前端邏輯
-│   │   └── start_frontend.sh
+│   │   ├── index.html           # Web UI
+│   │   ├── app.js               # 前端邏輯
+│   │   ├── start_frontend.sh    # 啟動腳本
+│   │   └── README.md            # 前端文檔
 │   ├── training/
-│   │   └── train.py       # 訓練腳本
+│   │   └── train.py             # 訓練腳本
 │   └── utils/
-│       └── preprocess.py  # 資料預處理
-├── .gitignore             # Git 忽略規則
-├── ARCHITECTURE.md        # 系統架構文檔
-├── CLAUDE.md              # 開發規範
-├── USAGE.md               # 詳細使用指南
-├── README.md              # 本文件
-├── start_all.sh           # 啟動所有服務
-└── stop_all.sh            # 停止所有服務
+│       └── preprocess.py        # 資料預處理
+│
+├── .gitignore                    # Git 忽略規則
+├── ARCHITECTURE.md               # 系統架構文檔
+├── CLAUDE.md                     # 開發規範 ⭐
+├── USAGE.md                      # 詳細使用指南
+├── README.md                     # 本文件
+├── start_all.sh                  # 啟動所有服務
+└── stop_all.sh                   # 停止所有服務
+```
+
+### 目錄說明
+
+#### 核心目錄
+- **`.claude/`** - Claude Code 整合，包含 10 個命令和 4 個專業插件
+- **`src/`** - 程式碼目錄（API、前端、訓練、工具）
+- **`config/`** - 配置檔案（⚠️ 不會被 commit，需自行建立）
+- **`dataset/`** - 資料集目錄（⚠️ 不會被 commit，需自行準備）
+
+#### 輸出目錄（自動生成，已在 .gitignore）
+- **`runs/`** - YOLO 訓練結果和模型權重
+- **`analysis/`** - Dataset Analyzer 輸出報告
+- **`monitoring/`** - Training Monitor 監控日誌
+- **`optimization/`** - Model Optimizer 分析結果
+- **`security/`** - API Security 掃描報告
+
+#### 文檔檔案
+- **`README.md`** - 專案總覽和快速開始（本文件）
+- **`CLAUDE.md`** - 開發規範和 Git 規則（⭐ 必讀）
+- **`ARCHITECTURE.md`** - 系統架構設計文檔
+- **`USAGE.md`** - 詳細使用指南和工作流程
+
+### 首次設定
+
+**1. 準備配置檔案：**
+```bash
+cp config/data.example.yaml config/data.yaml
+# 編輯 data.yaml，將路徑改為你的實際路徑
+```
+
+**2. 準備資料集：**
+將你的資料集放入 `dataset/` 目錄，確保結構如下：
+```
+dataset/your_dataset/
+├── images/train/    # 訓練圖片
+├── images/val/      # 驗證圖片
+├── labels/train/    # 訓練標註
+└── labels/val/      # 驗證標註
+```
+
+**3. 使用 Claude Code Commands：**
+```bash
+/preprocess          # 預處理資料
+/train               # 開始訓練
+/project-status      # 查看狀態
 ```
 
 ---

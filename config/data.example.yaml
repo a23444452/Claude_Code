@@ -1,0 +1,115 @@
+# YOLO 資料集配置範本
+# 使用方式：
+#   1. 複製此檔案：cp config/data.example.yaml config/data.yaml
+#   2. 編輯 data.yaml，將路徑改為你的實際路徑
+#   3. config/data.yaml 不會被 commit（已在 .gitignore）
+
+# 專案根目錄路徑（改為你的實際路徑）
+path: /path/to/your/YOLO_Project
+
+# 訓練集路徑（相對於 path）
+train: dataset/your_dataset/images/train
+
+# 驗證集路徑（相對於 path）
+val: dataset/your_dataset/images/val
+
+# 測試集路徑（選用）
+# test: dataset/your_dataset/images/test
+
+# 類別名稱（依照你的資料集修改）
+names:
+  0: 'class_0'  # 第一個類別
+  1: 'class_1'  # 第二個類別
+  2: 'class_2'  # 第三個類別
+  # 添加更多類別...
+
+# 類別數量（必須與 names 一致）
+nc: 3
+
+# ============================================
+# 常見配置範例
+# ============================================
+
+# 範例 1: 單類別偵測（如：人臉偵測）
+# names:
+#   0: 'face'
+# nc: 1
+
+# 範例 2: 多類別物件偵測
+# names:
+#   0: 'person'
+#   1: 'car'
+#   2: 'bicycle'
+#   3: 'dog'
+#   4: 'cat'
+# nc: 5
+
+# 範例 3: 工業瑕疵檢測
+# names:
+#   0: 'crack'      # 裂痕
+#   1: 'scratch'    # 刮痕
+#   2: 'dent'       # 凹痕
+#   3: 'stain'      # 污漬
+# nc: 4
+
+# 範例 4: 安全帽偵測
+# names:
+#   0: 'helmet'     # 戴安全帽
+#   1: 'no_helmet'  # 未戴安全帽
+# nc: 2
+
+# ============================================
+# 進階設定（選用）
+# ============================================
+
+# 資料增強設定（訓練時使用）
+# augment:
+#   hsv_h: 0.015    # HSV-Hue 增強
+#   hsv_s: 0.7      # HSV-Saturation 增強
+#   hsv_v: 0.4      # HSV-Value 增強
+#   degrees: 0.0    # 旋轉角度 (+/- deg)
+#   translate: 0.1  # 平移 (+/- fraction)
+#   scale: 0.5      # 縮放 (+/- gain)
+#   shear: 0.0      # 剪切 (+/- deg)
+#   perspective: 0.0 # 透視變換 (+/- fraction)
+#   flipud: 0.0     # 垂直翻轉機率
+#   fliplr: 0.5     # 水平翻轉機率
+#   mosaic: 1.0     # Mosaic 增強機率
+#   mixup: 0.0      # Mixup 增強機率
+
+# ============================================
+# 注意事項
+# ============================================
+
+# 1. 路徑可以使用絕對路徑或相對路徑
+#    - 絕對路徑：/Users/your_name/project/dataset/...
+#    - 相對路徑：dataset/your_dataset/... (相對於 path)
+
+# 2. 資料集結構必須符合 YOLO 格式：
+#    dataset/your_dataset/
+#    ├── images/
+#    │   ├── train/  # 訓練圖片 (.jpg, .png)
+#    │   └── val/    # 驗證圖片 (.jpg, .png)
+#    └── labels/
+#        ├── train/  # 訓練標註 (.txt)
+#        └── val/    # 驗證標註 (.txt)
+
+# 3. 標註檔案格式（每行一個物件）：
+#    class_id x_center y_center width height
+#    - class_id: 類別 ID (從 0 開始)
+#    - x_center, y_center: 中心點座標 (0-1 歸一化)
+#    - width, height: 寬高 (0-1 歸一化)
+
+# 4. 圖片與標註檔案必須一一對應：
+#    - image001.jpg → image001.txt
+#    - image002.png → image002.txt
+
+# 5. classes.txt 檔案（選用）：
+#    在 dataset/ 根目錄可放置 classes.txt
+#    每行一個類別名稱，順序對應 class_id
+
+# 6. 訓練前檢查：
+#    - 使用 /dataset-analyzer 檢查資料集品質
+#    - 確認所有圖片可正常讀取
+#    - 確認標註檔案格式正確
+#    - 確認類別數量和 names 一致
