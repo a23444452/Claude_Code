@@ -50,15 +50,19 @@ models/*.pt
 runs/
 wandb/
 
-# Dataset - DO NOT commit images
-dataset/**/*.jpg
-dataset/**/*.jpeg
-dataset/**/*.png
-dataset/**/*.bmp
-dataset/**/*.gif
+# Dataset - DO NOT commit entire dataset directory
+# Contains images, labels, and processed data
+dataset/
 
-# Keep dataset structure but not images
-!dataset/.gitkeep
+# Config files - DO NOT commit configuration with local paths
+# Each developer should maintain their own config files
+config/
+
+# Plugin analysis outputs
+analysis/
+monitoring/
+optimization/
+security/
 
 # Logs
 *.log
