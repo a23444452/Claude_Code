@@ -2,12 +2,31 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "GitCommit|GitPush",
+        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "echo '⚠️  [Claude Check] 請確認沒有將 *.pt 模型或 dataset 圖片加入 commit！' >&2",
-            "timeout": 2
+            "command": "python3 .claude/hooks/pre_train_validator.py",
+            "description": "訓練前驗證（資料集、配置、依賴）",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/git_commit_validator.py",
+            "description": "Git commit 驗證（防止提交大型檔案）",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/api_startup_validator.py",
+            "description": "API 啟動驗證（模型、端口、依賴）",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/command_suggestion.py",
+            "description": "命令建議（推薦更好的工具和命令）",
+            "timeout": 5
           }
         ]
       }
