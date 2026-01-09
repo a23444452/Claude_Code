@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "GitCommit|GitPush",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '⚠️  [Claude Check] 請確認沒有將 *.pt 模型或 dataset 圖片加入 commit！' >&2",
+            "timeout": 2
+          }
+        ]
+      }
+    ]
+  }
+}
