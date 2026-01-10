@@ -1,0 +1,69 @@
+{
+  "recommendations": [
+    // Python Development
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-python.black-formatter",
+    "ms-python.isort",
+    "ms-python.flake8",
+    "ms-python.mypy-type-checker",
+
+    // Testing
+    "littlefoxteam.vscode-python-test-adapter",
+    "hbenl.vscode-test-explorer",
+
+    // Git
+    "eamodio.gitlens",
+    "donjayamanne.githistory",
+    "mhutchie.git-graph",
+
+    // Remote Development
+    "ms-vscode-remote.remote-containers",
+    "ms-vscode-remote.remote-ssh",
+
+    // AI Assistant
+    "anthropic.claude-code",
+
+    // YAML Support
+    "redhat.vscode-yaml",
+
+    // Markdown
+    "yzhang.markdown-all-in-one",
+    "DavidAnson.vscode-markdownlint",
+
+    // Docker
+    "ms-azuretools.vscode-docker",
+
+    // REST Client (for API testing)
+    "humao.rest-client",
+
+    // Error Highlighting
+    "usernamehw.errorlens",
+
+    // Jupyter
+    "ms-toolsai.jupyter",
+    "ms-toolsai.jupyter-keymap",
+    "ms-toolsai.jupyter-renderers",
+
+    // Better Comments
+    "aaron-bond.better-comments",
+
+    // Path Intellisense
+    "christian-kohler.path-intellisense",
+
+    // TODO Highlight
+    "wayou.vscode-todo-highlight",
+
+    // Bracket Colorizer
+    "CoenraadS.bracket-pair-colorizer-2",
+
+    // File Icons
+    "vscode-icons-team.vscode-icons",
+
+    // Code Spell Checker
+    "streetsidesoftware.code-spell-checker",
+
+    // Python Docstring
+    "njpwerner.autodocstring"
+  ]
+}

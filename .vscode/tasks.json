@@ -1,0 +1,238 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Format Code (Black)",
+      "type": "shell",
+      "command": "black",
+      "args": ["src/", "tests/", "scripts/"],
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "Sort Imports (isort)",
+      "type": "shell",
+      "command": "isort",
+      "args": ["src/", "tests/", "scripts/"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Lint Code (Flake8)",
+      "type": "shell",
+      "command": "flake8",
+      "args": ["src/", "tests/"],
+      "problemMatcher": {
+        "owner": "python",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(.+):(\\d+):(\\d+): ([A-Z]\\d+) (.+)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "code": 4,
+          "message": 5
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      }
+    },
+    {
+      "label": "Type Check (mypy)",
+      "type": "shell",
+      "command": "mypy",
+      "args": ["src/"],
+      "problemMatcher": {
+        "owner": "python",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(.+):(\\d+): (error|warning): (.+)$",
+          "file": 1,
+          "line": 2,
+          "severity": 3,
+          "message": 4
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Run Tests (pytest)",
+      "type": "shell",
+      "command": "pytest",
+      "args": ["tests/", "-v", "--cov=src", "--cov-report=term"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Run Tests with Coverage",
+      "type": "shell",
+      "command": "pytest",
+      "args": [
+        "tests/",
+        "-v",
+        "--cov=src",
+        "--cov-report=html",
+        "--cov-report=term"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Validate Dataset",
+      "type": "shell",
+      "command": "python",
+      "args": ["scripts/validate_dataset.py", "config/data.yaml", "-v"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      }
+    },
+    {
+      "label": "Train YOLO Model",
+      "type": "shell",
+      "command": "python",
+      "args": ["src/training/train.py"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
+      "isBackground": false
+    },
+    {
+      "label": "Start FastAPI Server",
+      "type": "shell",
+      "command": "uvicorn",
+      "args": [
+        "src.api.main:app",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000"
+      ],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      },
+      "isBackground": true,
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "Download YOLO Models",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/download_models.sh", "n", "s"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Cleanup Project",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/cleanup.sh", "--dry-run"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Setup Project",
+      "type": "shell",
+      "command": "bash",
+      "args": ["scripts/setup_project.sh"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      }
+    },
+    {
+      "label": "Code Quality Check (All)",
+      "dependsOn": [
+        "Format Code (Black)",
+        "Sort Imports (isort)",
+        "Lint Code (Flake8)",
+        "Type Check (mypy)"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Git: Commit with Claude",
+      "type": "shell",
+      "command": "git",
+      "args": ["add", ".", "&&", "claude", "commit"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Open Swagger UI",
+      "type": "shell",
+      "command": "open",
+      "args": ["http://localhost:8000/docs"],
+      "windows": {
+        "command": "start",
+        "args": ["http://localhost:8000/docs"]
+      },
+      "linux": {
+        "command": "xdg-open",
+        "args": ["http://localhost:8000/docs"]
+      },
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,255 @@
+{
+  // Python Configuration
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+  "python.terminal.activateEnvironment": true,
+  "python.terminal.activateEnvInCurrentTerminal": true,
+
+  // Python Formatting
+  "python.formatting.provider": "none",
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
+
+  // Black Configuration
+  "black-formatter.args": ["--line-length=100"],
+
+  // isort Configuration
+  "isort.args": ["--profile", "black", "--line-length", "100"],
+
+  // Flake8 Configuration
+  "flake8.args": [
+    "--max-line-length=100",
+    "--extend-ignore=E203,W503",
+    "--exclude=.git,__pycache__,.pytest_cache,.mypy_cache,venv,.venv,runs"
+  ],
+
+  // mypy Configuration
+  "mypy-type-checker.args": [
+    "--ignore-missing-imports",
+    "--no-strict-optional",
+    "--exclude",
+    "(runs|dataset|models)"
+  ],
+
+  // Python Linting
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.mypyEnabled": true,
+
+  // Python Testing
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": ["tests"],
+
+  // Editor Settings
+  "editor.rulers": [100],
+  "editor.trimAutoWhitespace": true,
+  "editor.renderWhitespace": "boundary",
+  "editor.minimap.enabled": true,
+  "editor.minimap.maxColumn": 100,
+  "editor.suggestSelection": "first",
+  "editor.wordWrap": "off",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
+  // Files
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+
+  // File Associations
+  "files.associations": {
+    "*.yaml": "yaml",
+    "*.yml": "yaml",
+    ".claude/**/*": "markdown",
+    "Dockerfile*": "dockerfile",
+    "*.pt": "text"
+  },
+
+  // Files to Exclude from Explorer
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/*.pyo": true,
+    "**/.pytest_cache": true,
+    "**/.mypy_cache": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  },
+
+  // Files to Exclude from Search
+  "search.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/*.pyo": true,
+    "**/runs": true,
+    "**/dataset": true,
+    "**/.git": true,
+    "**/node_modules": true,
+    "**/.venv": true,
+    "**/venv": true
+  },
+
+  // Files to Exclude from Watcher
+  "files.watcherExclude": {
+    "**/__pycache__": true,
+    "**/runs/**": true,
+    "**/dataset/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.venv/**": true
+  },
+
+  // Git
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "git.ignoreLimitWarning": true,
+
+  // YAML Validation
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml",
+    "https://json.schemastore.org/github-issue-forms.json": ".github/ISSUE_TEMPLATE/*.yml"
+  },
+
+  // Markdown
+  "markdown.extension.toc.levels": "2..6",
+  "markdown.extension.preview.autoShowPreviewToSide": false,
+
+  // Terminal
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.env.osx": {
+    "PYTHONPATH": "${workspaceFolder}/src"
+  },
+  "terminal.integrated.env.linux": {
+    "PYTHONPATH": "${workspaceFolder}/src"
+  },
+  "terminal.integrated.env.windows": {
+    "PYTHONPATH": "${workspaceFolder}\\src"
+  },
+
+  // Jupyter
+  "jupyter.askForKernelRestart": false,
+  "jupyter.widgetScriptSources": ["jsdelivr.com", "unpkg.com"],
+
+  // Docker
+  "docker.showStartPage": false,
+
+  // Error Lens
+  "errorLens.enabledDiagnosticLevels": ["error", "warning"],
+  "errorLens.excludeBySource": ["flake8(E501)"],
+
+  // TODO Highlight
+  "todohighlight.isEnable": true,
+  "todohighlight.keywords": [
+    {
+      "text": "TODO:",
+      "color": "#fff",
+      "backgroundColor": "#ffbd2e",
+      "overviewRulerColor": "rgba(255, 189, 46, 0.8)"
+    },
+    {
+      "text": "FIXME:",
+      "color": "#fff",
+      "backgroundColor": "#f06292",
+      "overviewRulerColor": "rgba(240, 98, 146, 0.8)"
+    },
+    {
+      "text": "NOTE:",
+      "color": "#fff",
+      "backgroundColor": "#64b5f6",
+      "overviewRulerColor": "rgba(100, 181, 246, 0.8)"
+    }
+  ],
+
+  // Code Spell Checker
+  "cSpell.words": [
+    "anthropic",
+    "ultralytics",
+    "yolo",
+    "yolov",
+    "fastapi",
+    "uvicorn",
+    "pytest",
+    "mypy",
+    "flake8",
+    "isort",
+    "pydantic",
+    "bbox",
+    "xyxy",
+    "imgsz",
+    "tensorrt",
+    "onnx",
+    "cuda",
+    "opencv",
+    "pillow",
+    "numpy",
+    "pytorch"
+  ],
+
+  // AutoDocstring
+  "autoDocstring.docstringFormat": "google",
+  "autoDocstring.startOnNewLine": false,
+
+  // Better Comments
+  "better-comments.tags": [
+    {
+      "tag": "!",
+      "color": "#FF2D00",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "?",
+      "color": "#3498DB",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "//",
+      "color": "#474747",
+      "strikethrough": true,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "TODO",
+      "color": "#FF8C00",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "*",
+      "color": "#98C379",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    }
+  ]
+}
