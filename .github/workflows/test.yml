@@ -1,0 +1,53 @@
+name: 🧪 Run Tests
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+    paths:
+      - '**.py'
+      - 'requirements.txt'
+      - 'tests/**'
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ['3.10', '3.11']
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov pytest-asyncio
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: 🧪 Run unit tests
+      run: |
+        if [ -d tests ]; then
+          pytest tests/ -v --cov=src --cov-report=xml --cov-report=term
+        else
+          echo "⚠️ No tests directory found, skipping tests"
+        fi
+
+    - name: 📊 Upload coverage reports
+      uses: codecov/codecov-action@v4
+      if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.10'
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+
+    - name: ✅ Tests completed
+      run: echo "✅ Tests completed successfully on ${{ matrix.os }} with Python ${{ matrix.python-version }}!"

@@ -1,0 +1,74 @@
+name: 🗂️ Stale Issue Manager
+
+on:
+  schedule:
+    # Runs at 00:00 UTC every day
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 🗂️ Manage stale issues and PRs
+      uses: actions/stale@v9
+      with:
+        # Issue settings
+        stale-issue-message: |
+          👋 此 issue 已超過 30 天沒有活動。
+
+          如果問題仍然存在或需要協助，請回覆此訊息。
+          否則此 issue 將在 7 天後自動關閉。
+
+          如需重新開啟，請：
+          1. 提供更新的資訊
+          2. 確認問題是否仍然重現
+          3. 標註 @維護者 以獲得關注
+
+          感謝你的貢獻！🙏
+
+        close-issue-message: |
+          🔒 此 issue 因長時間無活動已自動關閉。
+
+          如果問題仍然存在，歡迎：
+          - 重新開啟此 issue 並提供最新資訊
+          - 建立新的 issue 並參考此 issue
+
+          感謝你的理解！
+
+        # PR settings
+        stale-pr-message: |
+          👋 此 PR 已超過 14 天沒有活動。
+
+          請問是否還需要繼續進行？
+          如果需要協助或 review，請回覆此訊息。
+          否則此 PR 將在 7 天後自動關閉。
+
+        close-pr-message: |
+          🔒 此 PR 因長時間無活動已自動關閉。
+
+          如需繼續此工作，歡迎：
+          - 重新開啟此 PR 並更新內容
+          - 建立新的 PR 並參考此 PR
+
+        # Timing settings
+        days-before-stale: 30  # Issues stale after 30 days
+        days-before-pr-stale: 14  # PRs stale after 14 days
+        days-before-close: 7  # Close after 7 days of stale
+        days-before-pr-close: 7
+
+        # Label settings
+        stale-issue-label: 'stale'
+        stale-pr-label: 'stale'
+        exempt-issue-labels: 'pinned,security,bug,enhancement,good first issue,help wanted'
+        exempt-pr-labels: 'pinned,security,work in progress'
+
+        # Activity settings
+        remove-stale-when-updated: true
+        operations-per-run: 100
+
+        # Targeting
+        only-labels: ''  # Process all issues/PRs
+        exempt-milestones: true
+        exempt-all-milestones: true

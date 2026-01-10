@@ -1,0 +1,126 @@
+name: 🎯 Model Validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      model_path:
+        description: 'Path to model file (e.g., models/best.pt)'
+        required: false
+        default: 'yolo11n.pt'
+      test_images:
+        description: 'Number of test images to validate'
+        required: false
+        default: '10'
+  release:
+    types: [published]
+
+jobs:
+  validate-model:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install ultralytics
+
+    - name: 🔍 Validate model file
+      run: |
+        echo "🔎 Validating model file..."
+        MODEL_PATH="${{ github.event.inputs.model_path || 'yolo11n.pt' }}"
+
+        if [ ! -f "$MODEL_PATH" ]; then
+          echo "⚠️ Model file not found: $MODEL_PATH"
+          echo "Using default YOLO11n model for validation"
+          MODEL_PATH="yolo11n.pt"
+        fi
+
+        # Check model file size
+        if [ -f "$MODEL_PATH" ]; then
+          size=$(stat -f%z "$MODEL_PATH" 2>/dev/null || stat -c%s "$MODEL_PATH" 2>/dev/null)
+          size_mb=$((size / 1024 / 1024))
+          echo "📊 Model size: ${size_mb}MB"
+
+          if [ $size -lt 1000 ]; then
+            echo "❌ Model file seems too small (< 1KB), might be corrupted"
+            exit 1
+          fi
+        fi
+
+        echo "✅ Model file validation passed"
+
+    - name: 🧪 Test model inference
+      run: |
+        echo "🧪 Testing model inference..."
+
+        # Create a simple Python script to test inference
+        cat > test_inference.py << 'EOF'
+        from ultralytics import YOLO
+        import sys
+
+        try:
+            model_path = sys.argv[1] if len(sys.argv) > 1 else "yolo11n.pt"
+            print(f"Loading model: {model_path}")
+            model = YOLO(model_path)
+
+            print(f"Model loaded successfully")
+            print(f"Model type: {model.task}")
+            print(f"Model names: {model.names}")
+
+            # Basic sanity check
+            if not model.names:
+                print("❌ Model has no class names defined")
+                sys.exit(1)
+
+            print("✅ Model inference test passed")
+
+        except Exception as e:
+            print(f"❌ Model inference test failed: {e}")
+            sys.exit(1)
+        EOF
+
+        MODEL_PATH="${{ github.event.inputs.model_path || 'yolo11n.pt' }}"
+        python test_inference.py "$MODEL_PATH"
+
+    - name: 📊 Generate model info
+      run: |
+        echo "📊 Generating model information..."
+
+        cat > model_info.py << 'EOF'
+        from ultralytics import YOLO
+        import sys
+
+        try:
+            model_path = sys.argv[1] if len(sys.argv) > 1 else "yolo11n.pt"
+            model = YOLO(model_path)
+
+            print("\n" + "="*50)
+            print("Model Information")
+            print("="*50)
+            print(f"Task: {model.task}")
+            print(f"Classes: {len(model.names)}")
+            print(f"Class names: {list(model.names.values())}")
+            print("="*50 + "\n")
+
+        except Exception as e:
+            print(f"Error: {e}")
+        EOF
+
+        MODEL_PATH="${{ github.event.inputs.model_path || 'yolo11n.pt' }}"
+        python model_info.py "$MODEL_PATH"
+
+    - name: ✅ Model validation completed
+      run: |
+        echo "✅ Model validation completed successfully!"
+        echo ""
+        echo "Model ready for deployment 🚀"

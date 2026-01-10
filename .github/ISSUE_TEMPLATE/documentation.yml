@@ -1,0 +1,94 @@
+name: 📚 文檔問題
+description: 回報文檔錯誤或建議改進
+title: "[Docs] "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        幫助我們改進專案文檔！
+
+  - type: dropdown
+    id: doc_type
+    attributes:
+      label: 文檔類型
+      options:
+        - README.md
+        - USAGE.md
+        - ARCHITECTURE.md
+        - CLAUDE.md
+        - API 文檔
+        - Plugin README
+        - Command 文檔
+        - Code 註解
+        - 其他
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: 問題類型
+      options:
+        - 內容錯誤
+        - 資訊過時
+        - 連結失效
+        - 範例錯誤
+        - 翻譯錯誤
+        - 內容缺失
+        - 格式問題
+        - 建議改進
+    validations:
+      required: true
+
+  - type: textarea
+    id: location
+    attributes:
+      label: 文檔位置
+      description: 指出問題出現在哪裡
+      placeholder: |
+        檔案：README.md
+        章節：## API 文檔
+        行數：約第 150 行
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_content
+    attributes:
+      label: 當前內容
+      description: 貼上有問題的文檔內容
+      placeholder: |
+        當前寫的是：
+        ```
+        使用 yolo train 開始訓練
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue_description
+    attributes:
+      label: 問題描述
+      description: 說明哪裡有問題
+      placeholder: |
+        實際應該是使用 `/train` command，而不是直接執行 yolo train
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested_content
+    attributes:
+      label: 建議的內容
+      description: 如果有的話，提供正確或改進後的內容
+      placeholder: |
+        建議改為：
+        ```
+        使用 `/train` command 開始訓練
+        ```
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 其他建議
+      description: 任何其他改進建議

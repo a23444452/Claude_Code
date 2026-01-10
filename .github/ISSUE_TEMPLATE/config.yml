@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 討論區
+    url: https://github.com/a23444452/Claude_Code/discussions
+    about: 一般問題討論、使用心得分享
+  - name: 📚 文檔
+    url: https://github.com/a23444452/Claude_Code/blob/main/README.md
+    about: 查看專案文檔和使用指南
+  - name: 🔧 疑難排解
+    url: https://github.com/a23444452/Claude_Code/blob/main/USAGE.md
+    about: 常見問題和疑難排解指南

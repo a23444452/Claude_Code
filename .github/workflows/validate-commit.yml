@@ -1,0 +1,104 @@
+name: 🚫 Validate Commit Contents
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  validate-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Fetch all history for all branches
+
+    - name: 🔍 Check for model files (.pt)
+      run: |
+        echo "🔎 Checking for model weight files..."
+        if git diff --name-only origin/${{ github.base_ref }}..HEAD | grep -E '\.pt$'; then
+          echo "❌ Error: Found .pt model files in commit!"
+          echo "Please remove model files from your commit."
+          echo "Model files should be stored in cloud storage or DVC, not in Git."
+          exit 1
+        fi
+        echo "✅ No model files found"
+
+    - name: 🔍 Check for dataset files
+      run: |
+        echo "🔎 Checking for dataset files..."
+        if git diff --name-only origin/${{ github.base_ref }}..HEAD | grep -E '^dataset/.*\.(jpg|jpeg|png|txt)$'; then
+          echo "❌ Error: Found dataset files in commit!"
+          echo "Please remove dataset images/annotations from your commit."
+          echo "Datasets should be managed separately, not in Git."
+          exit 1
+        fi
+        echo "✅ No dataset files found"
+
+    - name: 🔍 Check for config files with sensitive data
+      run: |
+        echo "🔎 Checking for config files..."
+        if git diff --name-only origin/${{ github.base_ref }}..HEAD | grep -E '^config/.*\.yaml$' | grep -v '\.example\.yaml$'; then
+          echo "❌ Error: Found config files in commit!"
+          echo "Please only commit .example.yaml files, not actual config files."
+          echo "Config files may contain local paths or sensitive information."
+          exit 1
+        fi
+        echo "✅ No sensitive config files found"
+
+    - name: 🔍 Check for large files
+      run: |
+        echo "🔎 Checking for large files (>10MB)..."
+        large_files=$(git diff --name-only origin/${{ github.base_ref }}..HEAD | while read file; do
+          if [ -f "$file" ]; then
+            size=$(stat -f%z "$file" 2>/dev/null || stat -c%s "$file" 2>/dev/null || echo 0)
+            if [ "$size" -gt 10485760 ]; then
+              echo "$file ($(numfmt --to=iec-i --suffix=B $size 2>/dev/null || echo ${size}B))"
+            fi
+          fi
+        done)
+        if [ -n "$large_files" ]; then
+          echo "❌ Error: Found large files in commit:"
+          echo "$large_files"
+          echo "Please remove large files and use Git LFS or cloud storage instead."
+          exit 1
+        fi
+        echo "✅ No large files found"
+
+    - name: 🔍 Check for sensitive files
+      run: |
+        echo "🔎 Checking for sensitive files..."
+        if git diff --name-only origin/${{ github.base_ref }}..HEAD | grep -E '\.(env|pem|key|p12|pfx)$'; then
+          echo "❌ Error: Found sensitive files in commit!"
+          echo "Please remove .env files, private keys, and certificates from your commit."
+          exit 1
+        fi
+        echo "✅ No sensitive files found"
+
+    - name: 🔍 Check commit message format
+      run: |
+        echo "🔎 Checking commit message format..."
+        # Get commit messages from this PR
+        commits=$(git log origin/${{ github.base_ref }}..HEAD --pretty=format:"%s")
+        invalid_commits=""
+
+        while IFS= read -r msg; do
+          # Check if commit follows Conventional Commits format
+          if ! echo "$msg" | grep -qE '^(feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert)(\(.+\))?: .+'; then
+            invalid_commits="${invalid_commits}\n- ${msg}"
+          fi
+        done <<< "$commits"
+
+        if [ -n "$invalid_commits" ]; then
+          echo "⚠️ Warning: Some commits don't follow Conventional Commits format:"
+          echo -e "$invalid_commits"
+          echo ""
+          echo "Format: <type>(<scope>): <subject>"
+          echo "Example: feat(api): add batch prediction endpoint"
+        else
+          echo "✅ All commit messages follow Conventional Commits format"
+        fi
+
+    - name: ✅ Commit validation passed
+      run: echo "✅ All commit validation checks passed!"

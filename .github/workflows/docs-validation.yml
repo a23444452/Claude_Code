@@ -1,0 +1,136 @@
+name: 📚 Documentation Validation
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  docs-check:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: 🔍 Check if code changes require README update
+      run: |
+        echo "🔎 Checking if README.md needs updating..."
+
+        # Get changed files
+        changed_files=$(git diff --name-only origin/${{ github.base_ref }}..HEAD)
+
+        # Check if any of these changes should trigger README update
+        readme_triggers="src/api/|src/training/|\.claude/commands/|\.claude/plugins/|\.claude/skills/|config/.*\.example\.|requirements\.txt"
+
+        if echo "$changed_files" | grep -qE "$readme_triggers"; then
+          echo "📝 Code changes detected that may require README update"
+
+          # Check if README.md was modified
+          if ! echo "$changed_files" | grep -q "README.md"; then
+            echo "⚠️ WARNING: Significant code changes found but README.md was not updated"
+            echo ""
+            echo "Changed files that may need documentation:"
+            echo "$changed_files" | grep -E "$readme_triggers"
+            echo ""
+            echo "Please review if README.md needs updating according to CLAUDE.md documentation rules."
+            echo "This is a warning, not a failure."
+          else
+            echo "✅ README.md was updated"
+          fi
+        else
+          echo "✅ No changes requiring README update"
+        fi
+
+    - name: 🔍 Check for broken links in README
+      run: |
+        echo "🔎 Checking for broken internal links..."
+
+        if [ -f README.md ]; then
+          # Extract internal links (relative paths)
+          links=$(grep -oP '\[.*?\]\(\K[^)]+(?=\))' README.md | grep -v '^http' | grep -v '^#' || true)
+
+          broken_links=""
+          for link in $links; do
+            if [ ! -f "$link" ] && [ ! -d "$link" ]; then
+              broken_links="${broken_links}\n- ${link}"
+            fi
+          done
+
+          if [ -n "$broken_links" ]; then
+            echo "⚠️ Warning: Found broken internal links in README.md:"
+            echo -e "$broken_links"
+          else
+            echo "✅ No broken internal links found"
+          fi
+        fi
+
+    - name: 🔍 Check for required README sections
+      run: |
+        echo "🔎 Checking for required README sections..."
+
+        if [ -f README.md ]; then
+          required_sections=(
+            "## 專案概述"
+            "## 功能特色"
+            "## 專案結構"
+            "## 快速開始"
+            "## API 文檔"
+          )
+
+          missing_sections=""
+          for section in "${required_sections[@]}"; do
+            if ! grep -q "$section" README.md; then
+              missing_sections="${missing_sections}\n- ${section}"
+            fi
+          done
+
+          if [ -n "$missing_sections" ]; then
+            echo "⚠️ Warning: Missing required sections in README.md:"
+            echo -e "$missing_sections"
+          else
+            echo "✅ All required sections present"
+          fi
+        fi
+
+    - name: 🔍 Validate CLAUDE.md exists and is updated
+      run: |
+        echo "🔎 Checking CLAUDE.md..."
+
+        if [ ! -f CLAUDE.md ]; then
+          echo "❌ Error: CLAUDE.md not found!"
+          echo "CLAUDE.md is required for project development guidelines."
+          exit 1
+        fi
+
+        echo "✅ CLAUDE.md exists"
+
+    - name: 🔍 Check plugin and command documentation
+      run: |
+        echo "🔎 Checking plugin and command documentation..."
+
+        # Check if plugins have README
+        if [ -d .claude/plugins ]; then
+          for plugin in .claude/plugins/*/; do
+            if [ ! -f "${plugin}README.md" ]; then
+              echo "⚠️ Warning: Plugin $(basename $plugin) missing README.md"
+            fi
+          done
+        fi
+
+        # Check if commands have proper format
+        if [ -d .claude/commands ]; then
+          for cmd in .claude/commands/*.md; do
+            if [ -f "$cmd" ]; then
+              if ! grep -q "^# " "$cmd"; then
+                echo "⚠️ Warning: Command $(basename $cmd) missing title"
+              fi
+            fi
+          done
+        fi
+
+        echo "✅ Documentation structure check completed"
+
+    - name: ✅ Documentation validation completed
+      run: echo "✅ Documentation validation completed!"

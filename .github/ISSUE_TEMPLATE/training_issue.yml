@@ -1,0 +1,145 @@
+name: 🎯 訓練問題
+description: 回報模型訓練相關的問題
+title: "[Training] "
+labels: ["training", "需要確認"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        回報訓練過程中遇到的問題，如過擬合、訓練停滯、效能不佳等。
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 確認清單
+      options:
+        - label: 我已使用 `/dataset-analyzer` 檢查資料集品質
+          required: true
+        - label: 我已確認資料集格式正確（YOLO 格式）
+          required: true
+        - label: 我已嘗試使用 `/model-optimizer` 分析問題
+          required: false
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: 問題類型
+      options:
+        - 訓練無法開始
+        - 訓練速度過慢
+        - Loss 不下降
+        - 過擬合 (Overfitting)
+        - 欠擬合 (Underfitting)
+        - 訓練中斷
+        - 記憶體不足
+        - 精度不理想
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 問題描述
+      description: 詳細描述訓練中遇到的問題
+    validations:
+      required: true
+
+  - type: textarea
+    id: dataset_info
+    attributes:
+      label: 資料集資訊
+      value: |
+        - 訓練集大小：
+        - 驗證集大小：
+        - 類別數量：
+        - 圖片尺寸範圍：
+        - 類別分布：（是否平衡）
+        - 標註品質：
+    validations:
+      required: true
+
+  - type: textarea
+    id: training_config
+    attributes:
+      label: 訓練配置
+      description: 貼上你的訓練配置或命令
+      render: shell
+      placeholder: |
+        /train --epochs 100 --batch 8 --model yolo11n
+
+        或：
+
+        python src/training/train.py \
+          --data config/data.yaml \
+          --epochs 100 \
+          --batch 8 \
+          --imgsz 640
+    validations:
+      required: true
+
+  - type: textarea
+    id: training_log
+    attributes:
+      label: 訓練日誌
+      description: 貼上相關的訓練輸出或錯誤訊息
+      render: shell
+      placeholder: |
+        Epoch 1/100: 100%|██████████| 10/10 [00:05<00:00,  1.95it/s]
+        Loss: 2.5432, mAP@0.5: 0.123
+        ...
+
+  - type: textarea
+    id: metrics
+    attributes:
+      label: 當前指標
+      description: 如果訓練有進行，請提供當前的指標
+      placeholder: |
+        - 最佳 mAP@0.5: 0.65
+        - 訓練集 Loss: 0.5
+        - 驗證集 Loss: 1.2
+        - Precision: 0.70
+        - Recall: 0.60
+        - 已訓練 epochs: 50/100
+
+  - type: dropdown
+    id: device
+    attributes:
+      label: 訓練裝置
+      options:
+        - CPU
+        - Apple Silicon (MPS)
+        - NVIDIA GPU (CUDA)
+        - AMD GPU (ROCm)
+    validations:
+      required: true
+
+  - type: textarea
+    id: hardware
+    attributes:
+      label: 硬體資訊
+      placeholder: |
+        - GPU: RTX 3090 24GB
+        - RAM: 32GB
+        - CPU: Intel i9-12900K
+        - 儲存: SSD
+
+  - type: textarea
+    id: tried_solutions
+    attributes:
+      label: 已嘗試的解決方法
+      description: 說明你已經嘗試過哪些方法
+      placeholder: |
+        - 降低 batch size 到 4
+        - 增加資料增強
+        - 調整學習率
+        - 使用更大的模型 (yolo11s)
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 其他資訊
+      description: |
+        - 訓練曲線截圖
+        - Dataset Analyzer 報告
+        - Model Optimizer 分析結果

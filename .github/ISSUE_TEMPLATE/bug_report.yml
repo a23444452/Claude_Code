@@ -1,0 +1,144 @@
+name: 🐛 Bug 回報
+description: 回報專案中的錯誤或問題
+title: "[Bug] "
+labels: ["bug", "需要確認"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感謝你回報 Bug！請提供以下資訊以幫助我們快速定位和修復問題。
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 確認清單
+      description: 請確認你已完成以下檢查
+      options:
+        - label: 我已搜尋過現有的 issues，確認這不是重複問題
+          required: true
+        - label: 我已閱讀過 README.md 和 USAGE.md
+          required: true
+        - label: 我已確認使用的是最新版本的程式碼
+          required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Bug 類別
+      description: 這個 bug 屬於哪個部分？
+      options:
+        - 資料預處理
+        - 模型訓練
+        - API 服務
+        - 前端介面
+        - Claude Code Commands
+        - Claude Code Plugins
+        - Claude Code Hooks
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug 描述
+      description: 清楚描述發生了什麼問題
+      placeholder: 例如：執行訓練時出現 CUDA out of memory 錯誤
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 重現步驟
+      description: 詳細說明如何重現這個問題
+      placeholder: |
+        1. 執行命令：`/train --epochs 100`
+        2. 觀察到...
+        3. 錯誤發生在...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 預期行為
+      description: 描述你預期應該發生什麼
+      placeholder: 訓練應該正常開始並顯示進度
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 實際行為
+      description: 描述實際發生了什麼
+      placeholder: 訓練立即崩潰並顯示錯誤訊息
+    validations:
+      required: true
+
+  - type: textarea
+    id: error
+    attributes:
+      label: 錯誤訊息
+      description: 如果有錯誤訊息，請完整貼上
+      render: shell
+      placeholder: |
+        RuntimeError: CUDA out of memory. Tried to allocate 2.00 GiB...
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 環境資訊
+      description: 提供你的系統和環境資訊
+      value: |
+        - OS: [例如 macOS 14.0, Ubuntu 22.04]
+        - Python 版本: [例如 3.10.13]
+        - PyTorch 版本: [例如 2.0.1]
+        - Ultralytics 版本: [例如 8.0.200]
+        - CUDA 版本: [如適用]
+        - GPU: [如適用，例如 NVIDIA RTX 3090]
+    validations:
+      required: true
+
+  - type: textarea
+    id: dataset
+    attributes:
+      label: 資料集資訊
+      description: 如果與資料集相關，請提供資訊
+      placeholder: |
+        - 資料集大小：500 張圖片
+        - 類別數：3
+        - 圖片尺寸：1280x720
+
+  - type: textarea
+    id: config
+    attributes:
+      label: 相關配置
+      description: 如果與配置相關，請貼上相關的配置檔內容
+      render: yaml
+      placeholder: |
+        # config/data.yaml
+        path: /path/to/dataset
+        train: images/train
+        val: images/val
+        nc: 3
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 其他資訊
+      description: 任何其他有助於解決問題的資訊
+      placeholder: |
+        - 截圖
+        - 相關的 log 檔案
+        - 嘗試過的解決方法
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: 貢獻意願
+      description: 如果知道如何修復，你願意提交 PR 嗎？
+      options:
+        - label: 我願意提交 PR 來修復這個問題
+          required: false

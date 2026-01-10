@@ -1,0 +1,150 @@
+name: 🔌 API 問題
+description: 回報 FastAPI 後端相關的問題
+title: "[API] "
+labels: ["api", "需要確認"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        回報 API 服務相關的問題，如啟動失敗、回應錯誤、效能問題等。
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: 確認清單
+      options:
+        - label: 我已使用 `/api-test` 測試 API 端點
+          required: false
+        - label: 我已使用 `/api-security` 進行安全檢查
+          required: false
+        - label: 我已檢查 API 文檔 (http://localhost:8000/docs)
+          required: true
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: 問題類型
+      options:
+        - API 無法啟動
+        - 端點錯誤
+        - 回應格式錯誤
+        - 效能問題（速度慢）
+        - 記憶體洩漏
+        - CORS 問題
+        - 認證問題
+        - 檔案上傳問題
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: 問題描述
+      description: 詳細描述 API 遇到的問題
+    validations:
+      required: true
+
+  - type: dropdown
+    id: endpoint
+    attributes:
+      label: 相關端點
+      options:
+        - GET /health
+        - GET /model/info
+        - POST /predict
+        - POST /predict/batch
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: request
+    attributes:
+      label: 請求範例
+      description: 貼上你的請求內容
+      render: shell
+      placeholder: |
+        curl -X POST "http://localhost:8000/predict" \
+          -F "file=@test.jpg" \
+          -F "conf_threshold=0.25"
+    validations:
+      required: true
+
+  - type: textarea
+    id: response
+    attributes:
+      label: 實際回應
+      description: 貼上 API 的實際回應或錯誤訊息
+      render: json
+      placeholder: |
+        {
+          "detail": "Internal Server Error"
+        }
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_response
+    attributes:
+      label: 預期回應
+      description: 描述你預期的回應格式
+      render: json
+      placeholder: |
+        {
+          "success": true,
+          "detections": [...],
+          "detection_count": 2
+        }
+
+  - type: textarea
+    id: api_logs
+    attributes:
+      label: API 日誌
+      description: 貼上相關的 API 日誌或錯誤訊息
+      render: shell
+      placeholder: |
+        INFO:     Started server process [12345]
+        ERROR:    Exception in ASGI application
+        Traceback (most recent call last):
+          ...
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 環境資訊
+      value: |
+        - Python:
+        - FastAPI:
+        - Uvicorn:
+        - Ultralytics:
+        - 是否使用 Docker:
+        - 反向代理: (Nginx/Apache/無)
+    validations:
+      required: true
+
+  - type: textarea
+    id: performance
+    attributes:
+      label: 效能資訊（如適用）
+      placeholder: |
+        - 回應時間：500ms
+        - 記憶體使用：2GB
+        - CPU 使用率：80%
+        - 並發請求數：10
+
+  - type: textarea
+    id: security_scan
+    attributes:
+      label: 安全掃描結果（如適用）
+      description: 如果執行過 `/api-security`，請貼上結果
+      render: text
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 其他資訊
+      description: |
+        - 網路配置
+        - 防火牆設定
+        - 瀏覽器 console 錯誤（前端相關）
