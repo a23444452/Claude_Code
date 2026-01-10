@@ -1,0 +1,70 @@
+# Ignore unnecessary files during Docker build to speed up the process
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.cover
+
+# YOLO specific
+runs/
+dataset/
+*.pt
+*.pth
+*.onnx
+*.engine
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Config
+config/*.yaml
+!config/*.example.yaml
+
+# Analysis outputs
+analysis/
+monitoring/
+optimization/
+security/
+
+# Logs
+logs/
+*.log
+
+# Node modules (should be installed during build)
+node_modules/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
