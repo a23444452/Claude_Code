@@ -1,0 +1,92 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/main/schema/marketplace.json",
+  "name": "yolo-project-plugins",
+  "version": "1.0.0",
+  "description": "YOLO Object Detection Project Plugin Bundle - Tools for training, deployment, and optimization",
+  "owner": {
+    "name": "YOLO Project Team",
+    "contact": "https://github.com/a23444452/Claude_Code"
+  },
+  "plugins": [
+    {
+      "name": "yolo-training-advisor",
+      "description": "Training workflow advisor that helps optimize hyperparameters, detect overfitting, and improve model performance",
+      "source": "yolo-training-advisor.md",
+      "category": "development",
+      "version": "1.0.0",
+      "author": "YOLO Project Team"
+    },
+    {
+      "name": "dataset-quality-guard",
+      "description": "Dataset quality validator that checks annotations, detects class imbalance, and ensures YOLO format compliance",
+      "source": "dataset-quality-guard.md",
+      "category": "development",
+      "version": "1.0.0",
+      "author": "YOLO Project Team"
+    },
+    {
+      "name": "api-performance-optimizer",
+      "description": "FastAPI performance analyzer and optimizer for YOLO inference endpoints",
+      "source": "api-performance-optimizer.md",
+      "category": "productivity",
+      "version": "1.0.0",
+      "author": "YOLO Project Team"
+    },
+    {
+      "name": "model-deployment-assistant",
+      "description": "Deployment guide for exporting and optimizing YOLO models (ONNX, TensorRT, CoreML)",
+      "source": "model-deployment-assistant.md",
+      "category": "development",
+      "version": "1.0.0",
+      "author": "YOLO Project Team"
+    },
+    {
+      "name": "training-monitor",
+      "description": "Real-time training monitor that tracks metrics, detects anomalies, and provides recommendations",
+      "source": "training-monitor.md",
+      "category": "productivity",
+      "version": "1.0.0",
+      "author": "YOLO Project Team"
+    },
+    {
+      "name": "yolo-security-advisor",
+      "description": "Security best practices for YOLO API endpoints, preventing common vulnerabilities",
+      "source": "yolo-security-advisor.md",
+      "category": "security",
+      "version": "1.0.0",
+      "author": "YOLO Project Team"
+    },
+    {
+      "name": "data-augmentation-tuner",
+      "description": "Data augmentation strategy optimizer for improving model generalization",
+      "source": "data-augmentation-tuner.md",
+      "category": "development",
+      "version": "1.0.0",
+      "author": "YOLO Project Team"
+    },
+    {
+      "name": "inference-optimizer",
+      "description": "Inference speed and accuracy optimizer with batch processing recommendations",
+      "source": "inference-optimizer.md",
+      "category": "productivity",
+      "version": "1.0.0",
+      "author": "YOLO Project Team"
+    },
+    {
+      "name": "yolo-learning-assistant",
+      "description": "Interactive learning guide explaining YOLO concepts, architecture, and best practices",
+      "source": "yolo-learning-assistant.md",
+      "category": "learning",
+      "version": "1.0.0",
+      "author": "YOLO Project Team"
+    },
+    {
+      "name": "model-comparison-tool",
+      "description": "Compare different YOLO model variants (n/s/m/l/x) and recommend the best for your use case",
+      "source": "model-comparison-tool.md",
+      "category": "productivity",
+      "version": "1.0.0",
+      "author": "YOLO Project Team"
+    }
+  ]
+}
