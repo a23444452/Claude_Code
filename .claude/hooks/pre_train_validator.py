@@ -21,9 +21,24 @@ import sys
 from pathlib import Path
 
 
+def find_project_root():
+    """尋找專案根目錄（包含 .claude 目錄）"""
+    current = Path.cwd()
+    while current != current.parent:
+        if (current / ".claude").exists():
+            return current
+        current = current.parent
+    return None
+
+
 def check_dataset_exists():
     """檢查資料集目錄是否存在"""
-    dataset_dir = Path("dataset")
+    # 嘗試找到專案根目錄
+    project_root = find_project_root()
+    if not project_root:
+        return True, None  # 找不到根目錄時跳過檢查
+
+    dataset_dir = project_root / "dataset"
     if not dataset_dir.exists():
         return False, "資料集目錄不存在：dataset/"
 
@@ -37,7 +52,16 @@ def check_dataset_exists():
 
 def check_config_exists():
     """檢查配置檔案是否存在"""
-    config_files = list(Path("config").glob("*.yaml"))
+    # 嘗試找到專案根目錄
+    project_root = find_project_root()
+    if not project_root:
+        return True, None  # 找不到根目錄時跳過檢查
+
+    config_dir = project_root / "config"
+    if not config_dir.exists():
+        return False, "config/ 目錄不存在"
+
+    config_files = list(config_dir.glob("*.yaml"))
     if not config_files:
         return False, "config/ 目錄下沒有 .yaml 配置檔案\n提示：複製 config/data.example.yaml 並修改"
 

@@ -23,12 +23,27 @@ import subprocess
 from pathlib import Path
 
 
+def find_project_root():
+    """尋找專案根目錄（包含 .claude 目錄）"""
+    current = Path.cwd()
+    while current != current.parent:
+        if (current / ".claude").exists():
+            return current
+        current = current.parent
+    return None
+
+
 def check_model_exists():
     """檢查是否有訓練好的模型"""
+    # 嘗試找到專案根目錄
+    project_root = find_project_root()
+    if not project_root:
+        return True, None  # 找不到根目錄時跳過檢查
+
     # 檢查預訓練模型或訓練輸出的模型
     model_paths = [
-        Path("yolo11n.pt"),  # 預訓練模型
-        Path("runs/train/exp/weights/best.pt"),  # 訓練的最佳模型
+        project_root / "yolo11n.pt",  # 預訓練模型
+        project_root / "runs/train/exp/weights/best.pt",  # 訓練的最佳模型
     ]
 
     existing_models = [str(p) for p in model_paths if p.exists()]
@@ -70,7 +85,12 @@ def check_api_dependencies():
 
 def check_api_file_exists():
     """檢查 API 主檔案是否存在"""
-    api_file = Path("src/api/main.py")
+    # 嘗試找到專案根目錄
+    project_root = find_project_root()
+    if not project_root:
+        return True, None  # 找不到根目錄時跳過檢查
+
+    api_file = project_root / "src/api/main.py"
     if not api_file.exists():
         return False, f"找不到 API 主檔案：{api_file}"
 
@@ -79,7 +99,12 @@ def check_api_file_exists():
 
 def check_cors_config():
     """檢查 CORS 配置（提醒而非阻止）"""
-    api_file = Path("src/api/main.py")
+    # 嘗試找到專案根目錄
+    project_root = find_project_root()
+    if not project_root:
+        return True, None  # 找不到根目錄時跳過檢查
+
+    api_file = project_root / "src/api/main.py"
     if api_file.exists():
         content = api_file.read_text()
         if 'allow_origins=["*"]' in content:

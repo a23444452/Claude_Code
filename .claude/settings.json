@@ -6,25 +6,25 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 .claude/hooks/pre_train_validator.py",
+            "command": "python3 /Users/vincewang/YOLO_Project/.claude/hooks/hook_wrapper.py pre_train_validator.py",
             "description": "訓練前驗證（資料集、配置、依賴）",
             "timeout": 10
           },
           {
             "type": "command",
-            "command": "python3 .claude/hooks/git_commit_validator.py",
+            "command": "python3 /Users/vincewang/YOLO_Project/.claude/hooks/hook_wrapper.py git_commit_validator.py",
             "description": "Git commit 驗證（防止提交大型檔案）",
             "timeout": 10
           },
           {
             "type": "command",
-            "command": "python3 .claude/hooks/api_startup_validator.py",
+            "command": "python3 /Users/vincewang/YOLO_Project/.claude/hooks/hook_wrapper.py api_startup_validator.py",
             "description": "API 啟動驗證（模型、端口、依賴）",
             "timeout": 10
           },
           {
             "type": "command",
-            "command": "python3 .claude/hooks/command_suggestion.py",
+            "command": "python3 /Users/vincewang/YOLO_Project/.claude/hooks/hook_wrapper.py command_suggestion.py",
             "description": "命令建議（推薦更好的工具和命令）",
             "timeout": 5
           }

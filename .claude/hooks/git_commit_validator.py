@@ -23,6 +23,16 @@ import subprocess
 from pathlib import Path
 
 
+def find_project_root():
+    """尋找專案根目錄（包含 .claude 目錄）"""
+    current = Path.cwd()
+    while current != current.parent:
+        if (current / ".claude").exists():
+            return current
+        current = current.parent
+    return None
+
+
 def get_staged_files():
     """取得已暫存的檔案列表"""
     try:
@@ -77,10 +87,16 @@ def check_config_files(files):
 
 def check_large_files(files):
     """檢查是否包含大型檔案 (>10MB)"""
+    # 嘗試找到專案根目錄
+    project_root = find_project_root()
+    if not project_root:
+        return True, None  # 找不到根目錄時跳過檢查
+
     large_files = []
     for f in files:
-        if Path(f).exists():
-            size_mb = Path(f).stat().st_size / (1024 * 1024)
+        file_path = project_root / f
+        if file_path.exists():
+            size_mb = file_path.stat().st_size / (1024 * 1024)
             if size_mb > 10:
                 large_files.append(f"{f} ({size_mb:.1f}MB)")
 

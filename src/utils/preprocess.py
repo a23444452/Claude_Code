@@ -267,19 +267,47 @@ class YOLODataPreprocessor:
         else:
             self.stats['val_count'] = valid_count
 
-    def create_classes_file(self, num_classes: int = 10):
+    def create_classes_file(self):
         """
         建立 classes.txt 檔案
-
-        Args:
-            num_classes: 類別數量
+        從來源目錄複製（如果存在），否則從標註檔自動偵測類別
         """
-        classes_path = self.output_dir / 'classes.txt'
-        with open(classes_path, 'w') as f:
-            for i in range(num_classes):
-                f.write(f"{i}\n")
+        source_classes = self.source_dir / 'classes.txt'
+        output_classes = self.output_dir / 'classes.txt'
 
-        print(f"\n[✓] 建立類別檔: {classes_path}")
+        if source_classes.exists():
+            # 從來源複製 classes.txt
+            shutil.copy2(source_classes, output_classes)
+            with open(source_classes, 'r') as f:
+                class_names = [line.strip() for line in f if line.strip()]
+            print(f"\n[✓] 從來源複製類別檔: {output_classes}")
+            print(f"    類別數量: {len(class_names)}")
+            print(f"    類別名稱: {', '.join(class_names)}")
+        else:
+            # 從標註檔自動偵測類別 ID
+            print(f"\n[⚠] 來源目錄沒有 classes.txt，嘗試自動偵測...")
+            class_ids = set()
+
+            for label_file in self.source_dir.glob('*.txt'):
+                try:
+                    with open(label_file, 'r') as f:
+                        for line in f:
+                            line = line.strip()
+                            if line:
+                                class_id = int(line.split()[0])
+                                class_ids.add(class_id)
+                except:
+                    continue
+
+            if class_ids:
+                # 建立類別檔（只包含 class_id）
+                with open(output_classes, 'w') as f:
+                    for class_id in sorted(class_ids):
+                        f.write(f"{class_id}\n")
+                print(f"[✓] 自動偵測到 {len(class_ids)} 個類別: {sorted(class_ids)}")
+                print(f"[✓] 建立類別檔: {output_classes}")
+            else:
+                print(f"[✗] 無法偵測類別，請手動建立 classes.txt")
 
     def run(self):
         """執行完整的預處理流程"""
